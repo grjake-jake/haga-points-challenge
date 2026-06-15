@@ -43,7 +43,7 @@
   table{width:100%;border-collapse:collapse;font-size:1.05rem;background:white;min-width:700px;}
   thead tr{background:var(--dark);color:var(--white);}
   thead th{font-family:var(--font-display);font-size:0.9rem;letter-spacing:1px;padding:9px 6px;text-align:center;white-space:nowrap;}
-  thead th.name-col{text-align:left;padding-left:14px;min-width:160px;}
+  thead th.name-col{text-align:left;padding-left:14px;min-width:160px;position:sticky;left:0;z-index:3;background:var(--dark);}
   thead th.num-col{min-width:50px;}
   thead th.rank-col{min-width:48px;}
   thead th.total-col{background:#2a2a1a;color:var(--gold);border-left:2px solid var(--gold);border-right:2px solid var(--gold);}
@@ -56,12 +56,15 @@
   tbody tr:hover{filter:brightness(0.94);}
   .row-female td{background:var(--pink-light);}
   .row-female td.total-col{background:#f0b8d0;font-weight:700;}
+  .row-female td.name-col{background:var(--pink-light);}
   .row-male td{background:var(--blue-light);}
   .row-male td.total-col{background:#90c8f0;font-weight:700;}
+  .row-male td.name-col{background:var(--blue-light);}
   .row-nm td{background:var(--grey-light);}
   .row-nm td.total-col{background:#c8c8c8;font-weight:700;}
+  .row-nm td.name-col{background:var(--grey-light);}
   td{padding:9px 6px;text-align:center;font-size:1.05rem;}
-  td.name-col{text-align:left;padding-left:14px;font-weight:600;font-size:1.1rem;}
+  td.name-col{text-align:left;padding-left:14px;font-weight:600;font-size:1.1rem;position:sticky;left:0;z-index:2;box-shadow:2px 0 4px rgba(0,0,0,0.08);}
   td.num-col{font-size:0.9rem;color:#555;}
   td.total-col{font-family:var(--font-display);font-size:1.25rem;border-left:2px solid rgba(0,0,0,0.1);border-right:2px solid rgba(0,0,0,0.1);}
   td.rank-col{text-align:center;font-family:var(--font-display);font-size:1rem;}
@@ -74,6 +77,7 @@
   .rank-5{background:#aaa;color:#fff;}
   #archive-table tbody tr td{background:#f0f0f0;font-size:0.95rem;}
   #archive-table tbody tr td.total-col{background:#ddd;}
+  #archive-table tbody tr td.name-col{background:#f0f0f0;}
   footer{text-align:center;padding:24px;color:#888;font-size:0.9rem;margin-top:20px;}
   @media print{.site-header,.section-header{position:static;box-shadow:none;}thead{position:static;}.schedule-bar,.legend{box-shadow:none;border:1px solid #ccc;}.section-header.archive,#archive-section{display:none !important;}body{background:white;}.table-wrap{overflow:visible;box-shadow:none;}table{min-width:auto;font-size:9pt;}td,th{padding:4px 3px;}.section-header{page-break-before:always;border-radius:0;}.section-header.ladies{page-break-before:auto;}.rank-badge{width:20px;height:20px;line-height:20px;font-size:8pt;}footer{font-size:8pt;}@page{margin:0.5in;}}
   @media(max-width:700px){.site-header h1{font-size:1.3rem;}.section-title{font-size:1.1rem;}.schedule-grid{grid-template-columns:repeat(4,1fr);min-width:0;}}
