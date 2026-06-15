@@ -456,14 +456,27 @@ function sortTable(key) {
     if (key === 'team') {
       va = a.querySelector('.team-id').textContent.trim();
       vb = b.querySelector('.team-id').textContent.trim();
-      // Reverse shotgun starting hole order: 1, 18, 17, 16, ..., 2
+      // Detect whether this tournament used a reverse shotgun start (team 18 exists)
+      // or normal sequential holes (1,2,3,...) - check once and cache on tbody
+      if (tbody.dataset.hasTeam18 === undefined) {
+        const allTeamIds = Array.from(tbody.querySelectorAll('.team-id')).map(el => el.textContent.trim());
+        const has18 = allTeamIds.some(id => /^18[A-Za-z]?$/.test(id));
+        tbody.dataset.hasTeam18 = has18 ? '1' : '0';
+      }
+      const reverseShotgun = tbody.dataset.hasTeam18 === '1';
       const shotgunOrder = [1,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2];
       const parse = s => {
         const m = s.match(/^(\d+)([A-Za-z]*)$/);
         if (!m) return [999, s];
         const hole = parseInt(m[1]);
-        const pos = shotgunOrder.indexOf(hole);
-        return [pos === -1 ? 999 : pos, m[2]];
+        let pos;
+        if (reverseShotgun) {
+          pos = shotgunOrder.indexOf(hole);
+          pos = pos === -1 ? 999 : pos;
+        } else {
+          pos = hole; // normal sequential order: 1,2,3,...
+        }
+        return [pos, m[2]];
       };
       const pa = parse(va);
       const pb = parse(vb);
