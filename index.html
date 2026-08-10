@@ -75,9 +75,10 @@
   tbody tr td.dropped{background:#e2e2e2;}
   td.dropped .drop-score{text-decoration:line-through;}
   td.dropped .drop-tag{display:block;font-size:0.6rem;font-weight:700;letter-spacing:0.05em;color:#8a8a8a;line-height:1;margin-top:2px;}
-  .season-rule{background:var(--white);border-left:5px solid var(--gold);border-radius:8px;padding:14px 18px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.08);font-size:1.05rem;line-height:1.55;color:var(--dark);}
-  .season-rule strong{font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase;color:var(--dark);}
-  .season-rule .drop-word{display:inline-block;background:#e2e2e2;color:#6a6a6a;font-size:0.75rem;font-weight:700;letter-spacing:0.05em;padding:1px 5px;border-radius:3px;vertical-align:1px;}
+  .season-rule{background:var(--dark);border:2px solid var(--gold);border-radius:8px;padding:16px 22px;margin-bottom:20px;box-shadow:0 3px 12px rgba(0,0,0,0.28);text-align:center;font-size:1.15rem;font-weight:600;line-height:1.55;color:#e9e9ec;}
+  .season-rule strong{font-family:var(--font-display);font-size:1.25rem;letter-spacing:2px;color:var(--gold);font-weight:700;}
+  .season-rule .drop-word{display:inline-block;background:#d8d8d8;color:#2a2a2a;font-size:0.85rem;font-weight:700;letter-spacing:0.05em;padding:1px 7px;border-radius:3px;vertical-align:1px;}
+  @media(max-width:700px){.season-rule{font-size:1rem;padding:13px 15px;}.season-rule strong{font-size:1.1rem;letter-spacing:1px;}}
   .rank-badge{display:inline-block;width:30px;height:30px;border-radius:50%;line-height:30px;font-family:var(--font-display);font-size:0.95rem;font-weight:700;text-align:center;}
   .rank-1{background:#ffd700;color:#333;}
   .rank-2{background:#c0c0c0;color:#333;}
@@ -88,7 +89,7 @@
   #archive-table tbody tr td.total-col{background:#ddd;}
   #archive-table tbody tr td.name-col{background:#f0f0f0;}
   footer{text-align:center;padding:24px;color:#888;font-size:0.9rem;margin-top:20px;}
-  @media print{.site-header,.section-header{position:static;box-shadow:none;}thead{position:static;}.schedule-bar,.legend,.season-rule{box-shadow:none;border:1px solid #ccc;}.section-header.archive,#archive-section{display:none !important;}body{background:white;}.table-wrap{overflow:visible;box-shadow:none;}table{min-width:auto;font-size:9pt;}td,th{padding:4px 3px;}.section-header{page-break-before:always;border-radius:0;}.section-header.ladies{page-break-before:auto;}.rank-badge{width:20px;height:20px;line-height:20px;font-size:8pt;}footer{font-size:8pt;}@page{margin:0.5in;}}
+  @media print{.site-header,.section-header{position:static;box-shadow:none;}thead{position:static;}.schedule-bar,.legend,.season-rule{box-shadow:none;border:1px solid #ccc;}.season-rule{background:white;color:#000;}.season-rule strong{color:#000;}.section-header.archive,#archive-section{display:none !important;}body{background:white;}.table-wrap{overflow:visible;box-shadow:none;}table{min-width:auto;font-size:9pt;}td,th{padding:4px 3px;}.section-header{page-break-before:always;border-radius:0;}.section-header.ladies{page-break-before:auto;}.rank-badge{width:20px;height:20px;line-height:20px;font-size:8pt;}footer{font-size:8pt;}@page{margin:0.5in;}}
   @media(max-width:700px){.site-header h1{font-size:1.3rem;}.section-title{font-size:1.1rem;}.schedule-grid{grid-template-columns:repeat(4,1fr);min-width:0;}}
 </style>
 </head>
@@ -111,7 +112,7 @@
     <div class="legend-item"><span class="x-badge">X</span> Non-member with points this season</div>
     <div class="legend-item" style="margin-left:auto;color:#888;font-size:0.85rem;font-weight:400;">Updated: Aug 2, 2026 &bull; 1 tournament remaining</div>
   </div>
-  <div class="season-rule"><strong>Season scoring:</strong> Your final total is based on your best 5 of 7 tournaments. Gray scores marked <span class="drop-word">DROP</span> are excluded from your total.</div>
+  <div class="season-rule"><strong>SEASON SCORING</strong> &mdash; Your final total is based on your best 5 of 7 tournaments. Gray scores marked <span class="drop-word">DROP</span> are excluded from your total.</div>
   <div class="section-header ladies"><span class="section-title">&#9825; Ladies</span></div>
   <div class="table-wrap"><table id="ladies-table"><thead><tr>
     <th class="num-col sort-th" onclick="sortSection('ladies','number')"># &#9660;</th>
