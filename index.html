@@ -72,6 +72,11 @@
   td.total-col{font-family:var(--font-display);font-size:1.25rem;border-left:2px solid rgba(0,0,0,0.1);border-right:2px solid rgba(0,0,0,0.1);}
   td.rank-col{text-align:center;font-family:var(--font-display);font-size:1rem;}
   td.zero{color:#ccc;}
+  td.dropped{color:#9a9a9a;}
+  tbody tr td.dropped{background:#e2e2e2;}
+  td.dropped .drop-score{text-decoration:line-through;}
+  td.dropped .drop-tag{display:block;font-size:0.6rem;font-weight:700;letter-spacing:0.05em;color:#8a8a8a;line-height:1;margin-top:2px;}
+  .drop-note{margin:0 0 10px;color:#666;font-size:0.9rem;font-style:italic;}
   .rank-badge{display:inline-block;width:30px;height:30px;border-radius:50%;line-height:30px;font-family:var(--font-display);font-size:0.95rem;font-weight:700;text-align:center;}
   .rank-1{background:#ffd700;color:#333;}
   .rank-2{background:#c0c0c0;color:#333;}
@@ -106,6 +111,7 @@
     <div class="legend-item"><span class="x-badge">X</span> Non-member with points this season</div>
     <div class="legend-item" style="margin-left:auto;color:#888;font-size:0.85rem;font-weight:400;">Updated: Aug 2, 2026 &bull; 1 tournament remaining</div>
   </div>
+  <div class="drop-note">Gray scores are dropped and do not count toward the season total.</div>
   <div class="section-header ladies"><span class="section-title">&#9825; Ladies</span></div>
   <div class="table-wrap"><table id="ladies-table"><thead><tr>
     <th class="num-col sort-th" onclick="sortSection('ladies','number')"># &#9660;</th>
@@ -379,6 +385,23 @@ const archivePlayers=[
 ];
 
 function getTotal(p){return [...p.scores].sort((a,b)=>b-a).slice(0,5).reduce((a,b)=>a+b,0);}
+// Indices excluded from the best-5 total: lowest played scores first, earliest tournament breaking ties.
+function getDropped(p){
+  const played=[];
+  for(let i=0;i<p.scores.length;i++) if(p.scores[i]>0) played.push(i);
+  const dropped=new Set();
+  if(played.length<=5) return dropped;
+  played.slice().sort((a,b)=>(p.scores[a]-p.scores[b])||(a-b)).slice(0,played.length-5).forEach(i=>dropped.add(i));
+  return dropped;
+}
+function scoreCells(p){
+  const dropped=getDropped(p);
+  return p.scores.map((s,i)=>{
+    if(s===0) return '<td class="zero">&mdash;</td>';
+    if(dropped.has(i)) return `<td class="dropped"><span class="drop-score">${s}</span><span class="drop-tag">DROP</span></td>`;
+    return `<td>${s}</td>`;
+  }).join('');
+}
 function rankSort(a,b){const ta=getTotal(a),tb=getTotal(b);if(tb!==ta)return tb-ta;for(let i=a.scores.length-1;i>=0;i--){if(b.scores[i]!==a.scores[i])return b.scores[i]-a.scores[i];}return 0;}
 function getRank(p,rs){const t=getTotal(p);if(t===0)return 0;const r=rs.filter(x=>rankSort(x,p)<0).length+1;return r<=5?r:0;}
 function buildRow(p,rank,rowClass){
@@ -390,7 +413,7 @@ function buildRow(p,rank,rowClass){
   else if(rank===4)rh='<span class="rank-badge rank-4">4</span>';
   else if(rank===5)rh='<span class="rank-badge rank-5">5</span>';
   const nd=p.number?`#${p.number}${showX?' <span class="x-badge">X</span>':''}`:(showX?'<span class="x-badge">X</span>':'');
-  const sc=p.scores.map(s=>`<td class="${s===0?'zero':''}">${s===0?'&mdash;':s}</td>`).join('');
+  const sc=scoreCells(p);
   return `<tr class="${rowClass}"><td class="num-col">${nd}</td><td class="name-col">${p.name}</td>${sc}<td class="total-col">${total>0?total:'&mdash;'}</td><td class="rank-col">${rank>0?rh:'&mdash;'}</td></tr>`;
 }
 const sortState={ladies:null,mens:null,nonmembers:null};
@@ -406,7 +429,7 @@ function renderSection(key,bodyId,rowClass){
 function sortSection(s,by){sortState[s]=(sortState[s]===by)?null:by;const m={ladies:['ladies-body','row-female'],mens:['mens-body','row-male'],nonmembers:['nonmembers-body','row-nm']};renderSection(s,m[s][0],m[s][1]);}
 let archiveSortState=null,archiveRendered=false;
 function toggleArchive(){const s=document.getElementById('archive-section'),i=document.getElementById('archive-toggle-icon');if(s.style.display==='none'){s.style.display='block';i.innerHTML='&#9650; Click to collapse';if(!archiveRendered){renderArchive();archiveRendered=true;}}else{s.style.display='none';i.innerHTML='&#9660; Click to expand';}}
-function renderArchive(){let g=[...archivePlayers];if(archiveSortState==='points')g.sort(rankSort);else if(archiveSortState==='number')g.sort((a,b)=>(parseInt(a.number)||9999)-(parseInt(b.number)||9999));else if(archiveSortState==='alpha')g.sort((a,b)=>a.name.localeCompare(b.name));document.getElementById('archive-body').innerHTML=g.map(p=>{const t=getTotal(p),nd=p.number?`#${p.number}`:'',sc=p.scores.map(s=>`<td class="${s===0?'zero':''}">${s===0?'&mdash;':s}</td>`).join('');return`<tr><td class="num-col">${nd}</td><td class="name-col">${p.name}</td>${sc}<td class="total-col">${t>0?t:'&mdash;'}</td><td class="rank-col">&mdash;</td></tr>`;}).join('');}
+function renderArchive(){let g=[...archivePlayers];if(archiveSortState==='points')g.sort(rankSort);else if(archiveSortState==='number')g.sort((a,b)=>(parseInt(a.number)||9999)-(parseInt(b.number)||9999));else if(archiveSortState==='alpha')g.sort((a,b)=>a.name.localeCompare(b.name));document.getElementById('archive-body').innerHTML=g.map(p=>{const t=getTotal(p),nd=p.number?`#${p.number}`:'',sc=scoreCells(p);return`<tr><td class="num-col">${nd}</td><td class="name-col">${p.name}</td>${sc}<td class="total-col">${t>0?t:'&mdash;'}</td><td class="rank-col">&mdash;</td></tr>`;}).join('');}
 function sortArchive(by){archiveSortState=(archiveSortState===by)?null:by;if(archiveRendered)renderArchive();}
 renderSection('ladies','ladies-body','row-female');
 renderSection('mens','mens-body','row-male');
